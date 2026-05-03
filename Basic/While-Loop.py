@@ -1,159 +1,119 @@
-# =========================================================
-# WHILE LOOP - COMPLETE PRACTICE (BEGINNER + SQA LEVEL)
-# =========================================================
-
-
 # =========================
-# Example 1: Basic While Loop
+# Variable Examples
 # =========================
 
-i = 1
-# Loop runs until condition becomes False
-while i <= 10:
-    print("Value:", i)
-    i += 1   # increment to avoid infinite loop
+# -------- Different Data Types in Variables --------
+username = "ebrahim123"   # string
+age = 30                  # integer
+height = 5.8              # float
+is_logged_in = False      # boolean
+
+print(username, age, height, is_logged_in)
 
 
+# -------- Dynamic Typing (Python feature) --------
+# Same variable can hold different types over time
+data = 100
+print("Before:", data, type(data))
 
-# =========================
-# Example 2: While + Else
-# =========================
-
-i = 1
-while i <= 5:
-    print("Counting:", i)
-    i += 1
-else:
-    # runs when while condition becomes False
-    print("Loop completed successfully")
+data = "Now I'm a string"
+print("After:", data, type(data))
 
 
-i = 0
-while i < 10:
-    i += 1
-    # skip number 4
-    if i == 4:
-        continue
-    print("Continue Example:", i)
+# -------- Using Variables in Expressions --------
+a = 10
+b = 5
 
-# =========================
-# Example 4: Break Statement
-# =========================
+sum_result = a + b
+mul_result = a * b
 
-i = 1
-while i <= 10:
-    if i == 6:
-        break  # stop loop completely
-    print("Break Example:", i)
-    i += 1
+print("Sum:", sum_result)
+print("Multiplication:", mul_result)
 
 
-# =========================
-# Example 5: Input Validation Loop
-# =========================
+# -------- Combining (Concatenation) --------
+first_name = "Ebrahim"
+last_name = "Hossain"
 
-while True:
-    user_input = int(input("Enter a positive number: "))
+# Combine strings using +
+full_name = first_name + " " + last_name
+print("Full Name:", full_name)
 
-    if user_input > 0:
-        print(f"{user_input} is valid")
-        break
-    else:
-        print(f"Invalid input: {user_input}")
+# Better way using f-string
+print(f"My name is {first_name} {last_name}")
 
 
-# =========================
-# Example 6: Login System (SQA REAL CASE)
-# =========================
+# -------- Updating Variable Value --------
+count = 0
+print("Initial count:", count)
 
-while True:
-    user_email = str(input("Enter valid email : "))
-    user_password = str(input("Enter valid password : "))
-    if user_email == "admin@gmail.com" and user_password == "admin123":
-        print("Login Successful: Admin Access Granted")
-        break
-    else:
-        print("Invalid credentials, try again")
-
-# =========================
-# Example 7: Retry Mechanism (Automation Concept)
-# =========================
-
-attempt = 1
-while attempt <= 3:
-    print(f"API Request Attempt: {attempt}")
-    # Simulated failure condition
-    if attempt == 3:
-        print("API Success on retry")
-        break
-    attempt += 1
-
-# =========================
-# Example 8: Sum using While Loop
-# =========================
-
-i = 1
-total = 0
-while i <= 5:
-    total += i
-    i += 1
-print("Total Sum:", total)
-
-# =========================
-# Example 9: Factorial Calculation
-# =========================
-
-n = 5
-factorial = 1
-while  n>0:
-    factorial *= n
-    n -= 1
-
-print("Factorial:", factorial)
+# Incrementing value
+count = count + 1   # or count += 1
+print("Updated count:", count)
 
 
+# -------- Input from User --------
+# input() always returns string
+user_input = input("Enter a number: ")
 
-# =========================
-# Example 10: Menu System (Real Application Style)
-# =========================
+print("You entered:", user_input)
+print("Type:", type(user_input))
 
-while True:
-    print("\n1. Create User")
-    print("2. Update User")
-    print("3. Delete User")
-    print("4. Exit")
-    choice = int(input("Enter your choice: "))
-    if choice == 1:
-        print("User Created")
-    elif choice == 2:
-        print("User Updated")
-    elif choice == 3:
-        print("User Deleted")
-    elif choice == 4:
-        print("Exiting system")
-        break
-    else:
-        print("Invalid option")
+# Convert input to integer
+user_number = int(user_input)
+print("Converted to int:", user_number)
 
 
-# =========================
-# IMPORTANT LEARNING NOTES
-# =========================
+# -------- Checking Variable Type --------
+value = 25.5
 
-# 1. while loop runs until condition becomes False
-# 2. always update variable inside loop (avoid infinite loop)
-# 3. break → stops loop completely
-# 4. continue → skips current iteration
-# 5. while True → used for infinite loops (login, API retry, menu systems)
-# 6. widely used in automation testing (retry, polling, validation)
+print("Is integer?", isinstance(value, int))    # False
+print("Is float?", isinstance(value, float))    # True
 
 
-# =========================
-# SQA AUTOMATION USE CASES
-# =========================
+# -------- Constants (by convention) --------
+# Python doesn't have true constants, but we use uppercase
+PI = 3.1416
+MAX_LIMIT = 100
 
-# - Login retry system
-# - API retry mechanism
-# - Waiting for UI element
-# - Polling for response status
-# - Menu-driven automation tools
+print("PI value:", PI)
+
+
+# -------- Deleting a Variable --------
+temp = "temporary data"
+print(temp)
+
+# Delete variable using del
+del temp
+
+# print(temp)  # ❌ This will cause error (variable no longer exists)
+
+
+# -------- Unpacking with List --------
+numbers = [1, 2, 3]
+
+# Assign list values to variables
+a, b, c = numbers
+
+print("Unpacked:", a, b, c)
+
+
+# -------- Ignoring Values While Unpacking --------
+data = ("Ebrahim", 30, "Dhaka")
+
+name, _, city = data   # '_' is used to ignore value
+
+print("Name:", name)
+print("City:", city)
+
+
+# -------- Using Variables Inside Lists & Dictionaries --------
+name = "Ebrahim"
+age = 30
+
+user = {
+    "name": name,
+    "age": age
+}
+
+print("User Dictionary:", user)
