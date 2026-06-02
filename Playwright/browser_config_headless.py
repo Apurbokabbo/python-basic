@@ -11,7 +11,7 @@ BROWSER_NAME = "chromium"
 #Step 3: URL
 URL = "https://www.google.com"
 
-HEADLESS = False
+HEADLESS = True
 
 #Step 4: Setup + Teardown
 @pytest.fixture(scope="class")
