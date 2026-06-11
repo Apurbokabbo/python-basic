@@ -5,7 +5,7 @@ from unittest import case
 import playwright
 import pytest
 from playwright.sync_api import sync_playwright
-from virtualenv.util import error
+
 
 from Basic.Conditions.shorthand import browser
 
@@ -121,6 +121,27 @@ class TestLocatorFinder:
         email = self.page.locator("//input[@placeholder='e.g. IT']")
 
         email.fill("IT")
+        time.sleep(3)
+
+
+    """Advance Locator"""
+    def test_by_role(self):
+        first_name = self.page.locator("//input[@role='textbox']").first
+        first_name.fill("Test-GTA")
+        time.sleep(2)
+
+    def test_by_aria_label(self):
+        personal_information = self.page.locator("[aria-label='Personal Information Form']")
+        print(f'Text Content: {personal_information.inner_text()}')
+
+    def test_by_chainlocator(self):
+        last_name = self.page.locator("section >> #lastName")
+        last_name.fill("Test")
+        time.sleep(3)
+    ##p> child > child 
+    def test_by_parent_child_relationship(self):
+        back_button = self.page.locator("nav > a").first
+        back_button.click()
         time.sleep(3)
 
 

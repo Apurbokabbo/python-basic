@@ -22,14 +22,36 @@ def setup(request):
     playwright = sync_playwright().start()
 
     #Step 6: Launch the browser
-    if BROWSER_NAME == "chromium":
-        browser = playwright.chromium.launch(headless=HEADLESS)
-    elif BROWSER_NAME == "firefox":
-        browser = playwright.firefox.launch(headless=HEADLESS)
-    elif BROWSER_NAME == "webkit":
-        browser = playwright.webkit.launch(headless=HEADLESS)
-    else:
-        raise ValueError(f"Browser {BROWSER_NAME} is not supported.")
+    match BROWSER_NAME:
+        case "edge":
+            browser = playwright.edge.launch(
+                headless=HEADLESS,
+                args=["--disable-blink-features=AutomationControlled"],
+            )
+        case "firefox":
+            browser = playwright.firefox.launch(
+                headless=HEADLESS,
+                args=["--disable-blink-features=AutomationControlled"],
+            )
+        case "chromium":
+            browser = playwright.chromium.launch(
+            headless=HEADLESS,
+            args=["--disable-blink-features=AutomationControlled"],
+            )
+
+        case "safari":
+            browser = playwright.safari.launch(
+                headless=HEADED_MODE,
+                args=["--disable-blink-features=AutomationControlled"],
+            )
+        case "webkit":
+            browser = playwright.webkit.launch(
+                headless=HEADED_MODE,
+                args=["--disable-blink-features=AutomationControlled"],
+            )
+        case _:
+            raise ValueError(f"Browser {BROWSER_NAME} is not supported.")
+
 
     # Step 7: create browser context
     context = browser.new_context()
