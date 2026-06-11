@@ -123,7 +123,7 @@ class TestLocatorFinder:
         email.fill("IT")
         time.sleep(3)
 
-
+    """tag = *"""
     """Advance Locator"""
     def test_by_role(self):
         first_name = self.page.locator("//input[@role='textbox']").first
@@ -138,12 +138,33 @@ class TestLocatorFinder:
         last_name = self.page.locator("section >> #lastName")
         last_name.fill("Test")
         time.sleep(3)
-    ##p> child > child 
+
+    ##p> child > child
     def test_by_parent_child_relationship(self):
         back_button = self.page.locator("nav > a").first
         back_button.click()
         time.sleep(3)
 
+    def test_by_and_expression(self):
+        nid = self.page.locator("//input[@id='nationalId' and @name='national_id']")
+        nid.fill("12312313")
+        time.sleep(3)
+
+    def test_by_or_expression(self):
+        nid = self.page.locator("//input[@id='nationalId' or @name='national_id1']")
+        nid.fill("12312313")
+        time.sleep(3)
+
+    def test_by_contains(self):
+        skill = self.page.locator("//textarea[contains(@id, 'skills')]")
+        skill.fill("Automation - Playwright, Python, Git")
+        time.sleep(3)
+
+
+
+
+
+    """Playwright Locator"""
 
 
 
