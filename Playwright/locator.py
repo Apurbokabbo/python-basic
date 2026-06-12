@@ -166,5 +166,58 @@ class TestLocatorFinder:
 
     """Playwright Locator"""
 
+    def test_by_get_by_role(self):
+
+        first_name_input = self.page.get_by_role("textbox", name="First Name")
+        first_name_input.fill("Apurbo")
+
+
+        self.page.get_by_role("checkbox", name="Newsletter").check()
+        time.sleep(1)
+
+        self.page.get_by_role("radio", name="Phone").check()
+        time.sleep(1)
+
+
+        self.page.get_by_role("button", name="Final Submission").click()
+        time.sleep(1)
+
+        self.page.get_by_role("link", name="Back to Home").click()
+        time.sleep(2)
+
+    def test_by_get_by_label(self):
+        self.page.get_by_label("Last Name").fill("Kabbo")
+        self.page.get_by_label("National ID / Passport").fill("A.Kabbo")
+        self.page.get_by_label("Emergency Contact Name").fill("A.Kabbo")
+        self.page.get_by_label("Marital Status").select_option("Married")
+        time.sleep(3)
+
+    def test_by_get_by_text(self):
+        self.page.get_by_text("Emergency Contact Phone").fill("01837184946")
+        self.page.get_by_text("Accept Terms & Conditions *").check()
+        time.sleep(5)
+
+    def test_by_get_by_placeholder(self):
+        self.page.get_by_placeholder("+8801XXXXXXXXX").fill("+8801837184946")
+        time.sleep(3)
+
+    def test_by_get_by_alt_text(self):
+        self.page.get_by_alt_text("QA Mirror").click()
+        time.sleep(3)
+
+    def test_by_get_by_tittle(self):
+        self.page.get_by_title("QA Mirror Home").click()
+        time.sleep(3)
+
+    def test_get_by_test_id(self):
+        self.page.get_by_test_id("input-first-name").fill("GTA")
+        time.sleep(3)
+
+
+
+
+
+
+
 
 
