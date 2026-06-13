@@ -1,13 +1,6 @@
 import time
-from multiprocessing import context
-from unittest import case
-
-import playwright
 import pytest
 from playwright.sync_api import sync_playwright
-
-
-from Basic.Conditions.shorthand import browser
 
 BROWSER_SUPPORTED = ["chromium","edge","firefox","safari","webkit"]
 BROWSER_NAME = "chromium"
