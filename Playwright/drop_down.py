@@ -9,25 +9,30 @@ URL = "https://automation.ebrahimhossain.com.bd/dropdown.html"
 
 @pytest.fixture(scope="class")
 def setup(request):
+    print(f"Starting {BROWSER_NAME} browser....")
+
     playwright = sync_playwright().start()
 
-    browser = None
-    context = None
-
     try:
-        match BROWSER_NAME:
-            case "chromium":
-                browser = playwright.chromium.launch(headless=False)
-            case "firefox":
-                browser = playwright.firefox.launch(headless=HEADED_MODE)
-            case _:
-                raise ValueError("Unsupported browser")
+        if BROWSER_NAME == "chromium":
+            browser = playwright.chromium.launch(
+                headless=False,
+                args=["--disable-blink-features=AutomationControlled"],
+            )
+        elif BROWSER_NAME == "firefox":
+            browser = playwright.firefox.launch(headless=False)
+        elif BROWSER_NAME == "webkit":
+            browser = playwright.webkit.launch(headless=False)
+        else:
+            raise ValueError("Unsupported browser")
 
         context = browser.new_context()
         page = context.new_page()
-        page.goto(URL)
+        page.set_viewport_size({"width": 1920, "height": 1080})
 
-        # ✅ ATTACH EVERYTHING (VERY IMPORTANT)
+        # ✅ FIX IS HERE
+        page.goto(URL, wait_until="domcontentloaded", timeout=60000)
+
         request.cls.playwright = playwright
         request.cls.browser = browser
         request.cls.context = context
@@ -36,10 +41,8 @@ def setup(request):
         yield
 
     finally:
-        if context:
-            context.close()
-        if browser:
-            browser.close()
+        context.close()
+        browser.close()
         playwright.stop()
 
 @pytest.mark.usefixtures("setup")
@@ -63,3 +66,52 @@ class TestDropDown:
         dropdown = self.page.locator("#amazon-sort")
         dropdown.select_option(index=3) #index
         time.sleep(2)
+
+    def test_dropdown_example_5(self):
+        country = self.page.locator("#country-select")
+        country.select_option(index=2) #index
+        time.sleep(1)
+
+        city = self.page.locator("#city-select")
+        city.select_option(index=2)
+        time.sleep(1)
+
+        neigh = self.page.locator("#neigh-select")
+        neigh.select_option(index=1)
+        time.sleep(2)
+
+    def test_dropdown_example_6(self):
+        search_field = self.page.locator("#repo-search") #search and select
+        search_field.fill("angular")
+        time.sleep(2)
+        dropdown = self.page.locator("#repo-list")
+        dropdown.select_option("angular")
+        print(f"Text: {dropdown.text_content()}")
+        time.sleep(2)
+
+
+    def test_dropdown_search2(self):
+        self.page.locator("#repo-search").fill("angular")
+        time.sleep(3)
+
+        options = self.page.locator("#repo-list option")
+
+        count = options.count()
+        print(f"Count: {count}")
+
+
+        for i in range(count):
+            option = options.nth(i)
+            style = option.get_attribute("style")
+            print(f"Style: {style}")
+            if style and "display: block" in style:
+                print(option.text_content())
+
+
+
+
+
+
+
+
+
