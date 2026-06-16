@@ -84,6 +84,25 @@ class TestMouseHover():
         self.page.get_by_role("link", name="Wireless Earbuds").click()
         time.sleep(2)
 
+    def test_mouse_hover_example3(self):
+        security = self.page.get_by_test_id("security-reveal")
+        time.sleep(2)
+        expect(security).to_be_visible()
+        security.hover()
+        time.sleep(2)
+        expect(security).to_contain_text("SECRET_API_TOKEN_99")
+        time.sleep(2)
+
+    def test_mouse_hover_example4(self):
+        progress = self.page.get_by_test_id("progress-trigger")
+        percent = self.page.locator("#progress-percent")
+        expect(progress).to_be_visible()
+        progress.hover()
+        time.sleep(2)
+        expect(percent).to_have_text("100%", timeout=5000)
+        time.sleep(2)
+
+
 
 
 
