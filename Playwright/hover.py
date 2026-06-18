@@ -1,53 +1,46 @@
-from idlelib import browser
-from multiprocessing import context
-from unittest import case
-
 import pytest
-import time
-from openpyxl.worksheet import page
 from playwright.sync_api import sync_playwright, expect
 
-SUPPORTED_BROWSERS = ["firefox", "chromium","edge"]
+SUPPORTED_BROWSERS = ["firefox", "chromium", "edge"]
 
 BROWSER_NAME = "chromium"
-
-HEADED_MODE = False
+HEADLESS = False
 
 URL = "https://automation.ebrahimhossain.com.bd/hovers.html"
 
+
 @pytest.fixture(scope="class")
 def setup(request):
-
     playwright = sync_playwright().start()
     playwright.selectors.set_test_id_attribute("data-test-id")
-    playwright.selectors.set_test_id_attribute("get_by_role")
 
     match BROWSER_NAME:
-
         case "chromium":
             browser = playwright.chromium.launch(
-                headless=HEADED_MODE,
-                args=["--disable-blink-features=AutomationControlled"],
+                headless=HEADLESS
             )
 
         case "edge":
-            browser = playwright.edge.launch(
-                headless=HEADED_MODE,
+            browser = playwright.chromium.launch(
+                channel="msedge",
+                headless=HEADLESS
             )
 
         case "firefox":
             browser = playwright.firefox.launch(
-                headless=HEADED_MODE,
-                args=["--disable-blink-features=AutomationControlled"],
+                headless=HEADLESS
             )
 
         case _:
             raise ValueError(f"Browser {BROWSER_NAME} is not supported.")
 
-    context = browser.new_context()
+    context = browser.new_context(
+        viewport={"width": 1920, "height": 1080}
+    )
+
     page = context.new_page()
-    page.set_viewport_size({"width": 1920, "height": 1080})
     page.goto(URL)
+
     request.cls.page = page
 
     yield
@@ -58,52 +51,62 @@ def setup(request):
 
 
 @pytest.mark.usefixtures("setup")
-class TestMouseHover():
+class TestMouseHover:
+
+    @pytest.fixture(autouse=True)
+    def reset_mouse_position(self):
+        yield
+        if hasattr(self, "page"):
+            self.page.mouse.move(0, 0)
+            self.page.wait_for_timeout(300)
+
     def test_mouse_hover_example(self):
-        service = self.page.locator("//button[normalize-space(text())='Services']")
+        service = self.page.get_by_role("button", name="Services")
         expect(service).to_be_visible()
+
         service.hover()
-        time.sleep(2)
-        consulting = self.page.locator("//button[normalize-space(text())='Consulting']")
+
+        consulting = self.page.get_by_role("button", name="Consulting")
+        expect(consulting).to_be_visible()
         consulting.hover()
-        time.sleep(2)
-        self.page.get_by_role("link", name="QA Automation Audit").click()
-        time.sleep(2)
+
+        qa_audit = self.page.get_by_role("link", name="QA Automation Audit")
+        expect(qa_audit).to_be_visible()
+        qa_audit.click()
 
     def test_mouse_hover_example2(self):
         category = self.page.get_by_role("button", name="Explore Categories")
         expect(category).to_be_visible()
+
         category.hover()
-        time.sleep(2)
+
         electronics = self.page.get_by_role("button", name="Electronics")
+        expect(electronics).to_be_visible()
         electronics.hover()
-        time.sleep(2)
+
         audio = self.page.get_by_role("button", name="Audio")
+        expect(audio).to_be_visible()
         audio.hover()
-        time.sleep(2)
-        self.page.get_by_role("link", name="Wireless Earbuds").click()
-        time.sleep(2)
+
+        earbuds = self.page.get_by_role("link", name="Wireless Earbuds")
+        expect(earbuds).to_be_visible()
+        earbuds.click()
 
     def test_mouse_hover_example3(self):
-        security = self.page.get_by_test_id("security-reveal")
-        time.sleep(2)
+        security = self.page.get_by_text("Hover to Authenticate")
         expect(security).to_be_visible()
+
         security.hover()
-        time.sleep(2)
-        expect(security).to_contain_text("SECRET_API_TOKEN_99")
-        time.sleep(2)
+
+        token = self.page.get_by_text("SECRET_API_TOKEN_99")
+        expect(token).to_be_visible(timeout=10000)
 
     def test_mouse_hover_example4(self):
         progress = self.page.get_by_test_id("progress-trigger")
         percent = self.page.locator("#progress-percent")
+
         expect(progress).to_be_visible()
+
         progress.hover()
-        time.sleep(2)
+
         expect(percent).to_have_text("100%", timeout=5000)
-        time.sleep(2)
-
-
-
-
-
-
