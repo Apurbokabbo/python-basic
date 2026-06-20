@@ -121,6 +121,17 @@ class TestAlertsExample :
         time.sleep(6)
         expect(toast_success).not_to_be_visible(timeout=5)
 
+    def test_alertToaste3(self):
+        toaster_btn = self.page.locator("//button[@data-testid='toast-action-btn']")
+        toaster_btn.click()
+
+        toast_success = self.page.locator("//div[@class='text-sm font-bold flex-grow' and text()='Message archived.']")
+        undo_btn = self.page.locator("//button[@data-testid='toast-undo-btn']")
+
+        expect(toast_success).to_contain_text("Message archived.")
+        undo_btn.click()
+        expect(toast_success).not_to_be_visible(timeout=5000)
+
 
 
 
